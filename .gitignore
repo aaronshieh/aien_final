@@ -4,3 +4,5 @@
 *.csv
 *.h5
 *.wav
+*.mp4
+/__pycache__

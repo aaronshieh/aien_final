@@ -12,7 +12,7 @@ DIALOGFLOW_PROJECT_ID = 'test-7405b'
 
 def index(request):
     title = 'main'
-    return render(request, 'website/index.html', locals())
+    return render(request, 'website/voicebot.html', locals())
 
 def camera(request):
     title = 'camera'
@@ -37,49 +37,9 @@ def chatbot(request):
     title = 'chatbot'
     return render(request, 'website/chatbot.html', locals())
 
-# 接Google Dialogflow 語意分析參數
-@csrf_exempt
-def webhook(request):
-    if request.method == 'POST':
-        # print(json.loads(request.body).keys())
-        # 取得公車路線號碼
-        bus_route = json.loads(request.body)['queryResult']['parameters']['bus_route_number']
-        bus_route = str(int(bus_route))
-        print(bus_route)
-        # 設定公共運輸API需要的資料
-        payload = {
-            '$format': 'JSON'
-        }
-        # 僞裝request來自於瀏覽器，不需要申請API KEY
-        header = {'user-agent':'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'}
-        # 送出要求
-        r = requests.get('https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeNearStop/City/Taipei/' + bus_route, params=payload, headers=header)
-        print(r.url)
-        # 要求成功
-        if r.status_code == 200:
-            # 讀出資料
-            body = r.json()
-            print(body)
-
-            # 打包回給google dialogflow的fulfillmentMessage
-            fulfillmentMessagesObj = []
-            for bus in body:
-                direction = ""
-                if bus['Direction'] == 0:
-                    direction = '去程'
-                elif bus['Direction'] == 1:
-                    direction = '返程'
-                # 顯示該路線的公車車牌、方向（去程或返程）、站牌名稱
-                fulfillment_text = {
-                    "text":{
-                        "text":[bus["PlateNumb"], "direction: " + direction, "stop: " + bus['StopName']['Zh_tw']]
-                    }
-                }
-                fulfillmentMessagesObj.append(fulfillment_text)
-
-            # 傳JSON回給google dialogflow
-            response = JsonResponse({'fulfillmentMessages':fulfillmentMessagesObj})
-            return response
+def voicebot(request):
+    title = 'voicebot'
+    return render(request, 'website/voicebot.html', locals())
 
 def detect_intent_texts(project_id, session_id, text, language_code):
     session_client = dialogflow.SessionsClient()
@@ -109,6 +69,16 @@ def send_message(request):
         response_text = { "message":  fulfillment_obj }
         print(response_text)
         return JsonResponse(response_text)
+
+@csrf_exempt
+def receive_audio(request):
+    if request.method == 'POST':
+        audio_file = request.FILES['audio_data']
+        with open('command.wav', 'wb') as f:
+            for chunk in audio_file.chunks():
+                f.write(chunk)
+        intent = detect_intent_audio(DIALOGFLOW_PROJECT_ID, "unique", 'command.wav', 'en')
+        return JsonResponse({'result':'success', 'intent':intent})
 
 def detect_intent_audio(project_id, session_id, audio_file_path,
                         language_code):
@@ -144,3 +114,8 @@ def detect_intent_audio(project_id, session_id, audio_file_path,
         response.query_result.intent_detection_confidence))
     print('Fulfillment text: {}\n'.format(
         response.query_result.fulfillment_text))
+
+    if response.query_result.intent.display_name == 'Open Account':
+        return 'open_account'
+    elif response.query_result.intent.display_name == 'Money Transfer':
+        return 'money_transfer'
