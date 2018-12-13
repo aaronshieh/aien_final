@@ -2,11 +2,8 @@
 {% load static %}
 
 {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <style>
-
-.navbar{
-    background-color: rgba(0, 8, 46, 0.5);
-}
 
 #videoContainer {
     margin: 0px auto;
@@ -23,6 +20,11 @@
 #canvas {
     border: 0px #333 solid;
 }
+
+#h1 {
+    color: #343a40;
+}
+
 </style>
 {% endblock %}
 
@@ -30,8 +32,8 @@
 <div class="container">
     <div class="row">
         <div class="col text-center">
-            <br>
-            <h1 class="display-4">
+            <br><br><br><br><br>
+            <h1 class="display-4" id="h1">
                 Login
             </h1>
             <br>
@@ -49,9 +51,10 @@
     <br>
     <div class="row">
         <div class="col-12 text-center">
-            <button id="login" class="btn btn-primary">LOGIN</button>
+            <button id="login" class="btn btn-primary">Login</button>
         </div>
     </div>
+    <br>
 </div>
 {% endblock %}
 

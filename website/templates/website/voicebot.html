@@ -2,19 +2,17 @@
 {% load static %}
 
 {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <style>
-.navbar{
-    background-color: rgba(0, 8, 46, 0.5);
-}
-
-body,html {
-    height: 100%;
-}
 
 #recordButton {
     width: 300px;
     height: 300px;
     font-size: 150px;
+}
+
+#h1 {
+    color: #343a40;
 }
 
 </style>
@@ -24,14 +22,14 @@ body,html {
 <div class="container">
     <div class="row">
         <div class="col text-center">
-            <br>
-            <h1 class="display-4">
+            <br><br><br><br><br>
+            <h1 class="display-4" id="h1">
                 What can I do for you?
             </h1>
             <br>
         </div>
     </div>
-    <div class="row">
+    <div class="row flex-fill">
         <div class="col text-center">
             <button class="btn btn-primary rounded-circle" id="recordButton">
                 <i class="fas fa-microphone"></i>

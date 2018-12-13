@@ -2,23 +2,17 @@
 {% load static %}
 
 {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <style>
 
-.navbar{
-    background-color: rgba(0, 8, 46, 0.5);
-}
-
-button{
+#transfer{
+    font-size: 150px;
     height: 300px;
     width: 300px;
 }
 
-#transfer{
-    font-size: 50px;
-}
-
-.fa-share-square{
-    font-size: 100px;
+#h1 {
+    color: #343a40;
 }
 
 </style>
@@ -28,20 +22,22 @@ button{
 <div class="container">
     <div class="row">
         <div class="col text-center">
-            <br>
-            <h1 class="display-4">
+            <br><br><br><br><br>
+            <h1 class="display-4" id="h1">
                 Menu
             </h1>
             <br>
         </div>
     </div>
     <div class="row">
-        <div class="col-6 text-right">
-            <button class="btn btn-success" id="transfer"><i class="fas fa-share-square"></i><br>Transfer</button>
+        <div class="col text-center">
+            <button class="btn btn-success rounded-circle" id="transfer">
+                <i class="fas fa-share-square"></i>
+            </button>
         </div>
-        <div class="col-6 text-left">
+        <!-- <div class="col-6 text-left">
             <button class="btn btn-success" id="balance">Balance</button>
-        </div>
+        </div> -->
     </div>
     <br>
 </div>
@@ -55,6 +51,14 @@ $(function(){
 
     transfer.click(function(){
         window.location.href = 'transfer';
+    });
+
+    transfer.mouseover(function(){
+        $(this).css('font-size', '50px').html('Money<br>Transfer');
+    });
+
+    transfer.mouseout(function(){
+        $(this).css('font-size', '150px').html('<i class="fas fa-share-square"></i>');
     });
 });
 </script>

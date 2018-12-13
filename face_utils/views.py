@@ -177,7 +177,7 @@ def identify_emotion(request):
         path = 'emotion-recognition'
 
         # TODO: find more efficient way to load model
-        model = load_model(os.path.sep.join([path, 'model_20181130.h5']))
+        model = load_model(os.path.sep.join([path, 'model-2.h5']))
 
         path_ = os.path.sep.join([path, 'test'])
 
@@ -203,7 +203,7 @@ def identify_emotion(request):
             proba = model.predict(face.reshape(-1,100,100,1))
             pred = np.argmax(model.predict(face.reshape(-1,100,100,1)))
 
-            emotions = ['anger', 'happy', 'neutral', 'sad', 'surprise']
+            emotions = ['angry', 'happy', 'expressionless', 'sad', 'surprised']
 
             print("predicted:", emotions[pred])
             print(proba)

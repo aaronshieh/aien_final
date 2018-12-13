@@ -2,11 +2,8 @@
 {% load static %}
 
 {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <style>
-
-.navbar{
-    background-color: rgba(0, 8, 46, 0.5);
-}
 
 #videoContainer {
     margin: 0px auto;
@@ -28,6 +25,10 @@
     max-width:800px;
 }
 
+#h1 {
+    color: #343a40;
+}
+
 </style>
 {% endblock %}
 
@@ -35,8 +36,8 @@
 <div class="container">
     <div class="row">
         <div class="col text-center">
-            <br>
-            <h1 class="display-4">
+            <br><br><br><br><br>
+            <h1 class="display-4" id="h1">
                 Money Transfer
             </h1>
             <br>
@@ -54,7 +55,9 @@
                     <label for="amount">Amount:</label>
                     <input type="text" class="form-control" id="amount" name="amount" placeholder="amount">
                 </div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferModal">Transfer!</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferModal">
+                    Transfer
+                </button>
             </form>
         </div>
         <div class="col-4"></div>
@@ -72,14 +75,18 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col">
+                    <div class="col text-center">
+                        <div>
+                            <h1 class="display-4" id="detectedEmotion"></h1>
+                            <br>
+                        </div>
                         <div id="videoContainer">
                             <video autoplay="true" id="videoElement">
                             </video>
                             <canvas id="canvas" width="0" height="0"></canvas>
                         </div>
                         <div id="transferContainer">
-                            <h1 class="display-4" id="transferResult">Transfer Successful!</h1>
+                            <h1 id="transferResult">Transfer Successful!</h1>
                             <table class="table table-bordered">
                                 <thead>
                                 </thead>
@@ -193,7 +200,7 @@ $(function(){
                 window.location.href = "main";
             });
             transferContainer.show();
-        }, 1000)
+        }, 2000)
     }
 
     function transferFail(msg){
@@ -211,7 +218,7 @@ $(function(){
                 window.location.href = "main";
             });
             transferContainer.show();
-        }, 1000)
+        }, 2000)
     }
 
     // Verify button
@@ -231,7 +238,13 @@ $(function(){
         }).done(function(msg){
             console.log('[done]:', msg);
             document.getElementById("snap").removeEventListener("click", snap);
-            alert(msg.emotion);
+            // alert(msg.emotion);
+            if (msg.emotion != 'happy'){
+                var text = `I see you are ${msg.emotion}, try to be happy next time!`
+            } else {
+                var text = `${msg.emotion}!`
+            }
+            $('#detectedEmotion').text(text);
             if(msg.emotion == 'happy'){
                 transferSuccess(msg);
             } else {

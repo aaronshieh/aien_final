@@ -2,11 +2,8 @@
 {% load static %}
 
 {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <style>
-
-.navbar{
-    background-color: rgba(0, 8, 46, 0.5);
-}
 
 #videoContainer {
     margin: 0px auto;
@@ -28,6 +25,15 @@
     max-width:800px;
 }
 
+#h1 {
+    color: #343a40;
+}
+
+#create {
+    padding: 1.5rem;
+    font-size: 1.5rem;
+}
+
 </style>
 {% endblock %}
 
@@ -35,36 +41,39 @@
 <div class="container">
     <div class="row">
         <div class="col text-center">
-            <br>
-            <h1 class="display-4">
+            <br><br><br><br><br>
+            <h1 class="display-4" id="h1">
                 New Account Registration
             </h1>
             <br>
         </div>
     </div>
     <div class="row">
-        <div class="col-4"></div>
+        <div class="col-2">
+        </div>
+        <div class="col-4 text-center">
+            <canvas id="photo" width="320" height="240"></canvas>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createFaceId">
+                Create Face ID
+            </button>
+            <img id="img1" src="{% static 'images/default_avatar.jpg' %}" hidden>
+        </div>
         <div class="col-4">
             <form>
                 <div class="form-group">
                     <label for="account">Account Name:</label>
                     <input type="text" class="form-control" id="account" name="account" placeholder="account name">
                 </div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createFaceId">Create Face ID</button>
             </form>
             <br>
         </div>
-        <div class="col-4">
+        <div class="col-2">
         </div>
     </div>
+    <hr>
     <div class="row">
         <div class="col text-center">
-            <canvas id="photo" width="640" height="480"></canvas>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col text-center">
-            <button type="button" class="btn btn-primary" id="create">Create Account</button>
+            <button type="button" class="btn btn-warning" id="create">Create Account</button>
             <br>
         </div>
     </div>
@@ -111,6 +120,9 @@ $(function(){
     var transferContainer = $('#createFaceId');
     transferContainer.hide();
 
+    var img_ = document.getElementById('img1');
+    context.drawImage(img_, 0, 0);
+
     $('#createFaceId').on('shown.bs.modal', function(e){
         if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({video: true})
@@ -127,7 +139,7 @@ $(function(){
     // Snap
     document.getElementById("snap").addEventListener("click", function snap() {
         console.log('snap!');
-        context.drawImage(video[0], 0, 0, 640, 480);
+        context.drawImage(video[0], 0, 0, 320, 240);
         $('#createFaceId').modal('hide');
     });
 
