@@ -143,12 +143,33 @@ function sendAudioFile(blob) {
         contentType: false
     }).done(function(msg){
         console.log(msg);
-        if(msg.intent == 'open_account'){
-            window.location.href = '/bank/create';
-        } else if(msg.intent == 'money_transfer'){
-            window.location.href = '/bank/transfer';
-        }
+        var audioString = JSON.stringify(msg.response_audio)
+        // console.log(audioString)
+        
+        // weird hack to remove " from start and end of audioString
+        // var snd = new Audio("data:audio/x-wav;base64," + audioString.substring(1,audioString.length-1));
+        // snd.play();
+
+        play(audioString).then(function(){
+            if(msg.intent == 'open_account'){
+                window.location.href = '/bank/create';
+            } else if(msg.intent == 'money_transfer'){
+                window.location.href = '/bank/transfer';
+            }
+        });
     });
+
+    function play(audioString) {
+        return new Promise(function(resolve, reject) {   // return a promise
+            var audio = new Audio();                     // create audio wo/ src
+            audio.preload = "auto";                      // intend to play through
+            audio.autoplay = true;                       // autoplay when loaded
+            audio.onerror = reject;                      // on error, reject
+            audio.onended = resolve;                     // when done, resolve
+
+            audio.src = "data:audio/x-wav;base64," + audioString.substring(1,audioString.length-1); // just for example
+     });
+}
 }
 </script>
 {% endblock %}

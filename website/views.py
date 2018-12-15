@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import dialogflow, json, requests
+import dialogflow, json, requests, base64
 from google.protobuf.json_format import MessageToJson
 
 import os
@@ -77,8 +77,8 @@ def receive_audio(request):
         with open('command.wav', 'wb') as f:
             for chunk in audio_file.chunks():
                 f.write(chunk)
-        intent = detect_intent_audio(DIALOGFLOW_PROJECT_ID, "unique", 'command.wav', 'en')
-        return JsonResponse({'result':'success', 'intent':intent})
+        response = detect_intent_audio(DIALOGFLOW_PROJECT_ID, "unique", 'command.wav', 'en')
+        return JsonResponse(response)
 
 def detect_intent_audio(project_id, session_id, audio_file_path,
                         language_code):
@@ -86,6 +86,7 @@ def detect_intent_audio(project_id, session_id, audio_file_path,
     Using the same `session_id` between requests allows continuation
     of the conversaion."""
     # import dialogflow_v2 as dialogflow
+    import dialogflow_v2beta1 as dialogflow
 
     session_client = dialogflow.SessionsClient()
 
@@ -114,8 +115,17 @@ def detect_intent_audio(project_id, session_id, audio_file_path,
         response.query_result.intent_detection_confidence))
     print('Fulfillment text: {}\n'.format(
         response.query_result.fulfillment_text))
+    # print(response)
+    # with open('output.wav', 'wb') as out:
+    #     out.write(response.output_audio)
+    #     print('Audio content written to file "output.wav"')
+
+    encoded_audio = base64.b64encode(response.output_audio)
+    encoded_audio = encoded_audio.decode('ascii')
 
     if response.query_result.intent.display_name == 'Open Account':
-        return 'open_account'
+        return {'result':'success','intent':'open_account', 'response_audio':encoded_audio}
     elif response.query_result.intent.display_name == 'Money Transfer':
-        return 'money_transfer'
+        return {'result':'success','intent':'money_transfer', 'response_audio':encoded_audio}
+    else:
+        return {'result':'success','intent':'unknown', 'response_audio':encoded_audio}
