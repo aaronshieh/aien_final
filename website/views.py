@@ -127,5 +127,7 @@ def detect_intent_audio(project_id, session_id, audio_file_path,
         return {'result':'success','intent':'open_account', 'response_audio':encoded_audio}
     elif response.query_result.intent.display_name == 'Money Transfer':
         return {'result':'success','intent':'money_transfer', 'response_audio':encoded_audio}
+    elif response.query_result.intent.display_name == 'Security':
+        return {'result':'success','intent':'security', 'response_audio':encoded_audio}
     else:
         return {'result':'success','intent':'unknown', 'response_audio':encoded_audio}

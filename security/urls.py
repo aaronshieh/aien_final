@@ -5,4 +5,5 @@ app_name = "security"
 
 urlpatterns = [
     path('', views.security),
+    path('run/', views.run),
 ]

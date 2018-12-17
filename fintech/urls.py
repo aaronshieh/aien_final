@@ -32,5 +32,5 @@ urlpatterns = [
     path('face_utils/', include('face_utils.urls')),
 
     # security
-    path('security', include('security.urls')),
+    path('security/', include('security.urls')),
 ]

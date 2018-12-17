@@ -7,6 +7,7 @@ import pickle
 import cv2
 import os
 import time
+import keras 
 from linebot import LineBotApi
 from linebot.models import TextSendMessage,ImageSendMessage,LocationSendMessage
 from linebot.exceptions import LineBotApiError
@@ -19,7 +20,7 @@ def chatbot(image_url, label):
 	CHANNEL_ACCESS_TOKEN = "AfBiSgayqOrt3H2XWjmscj32vnPtPB5yN4IOAN/fLmeE6kIP2gM5OOH91zwNmNCBugn0Ti5RQVuRDSnD0qbwzaLGCKen7/pQ56/cRhmetnR4GRVMKOilhOXQV5rMB6Gb0s4pw0FIyQq6a5seJ2j36AdB04t89/1O/w1cDnyilFU="
 	to = "U097c09aa32416c7eadedf6c395449c53"
 	line_bot_api=LineBotApi(CHANNEL_ACCESS_TOKEN)
-	title = "資策會無人銀行"+"("+label+")"
+	title = "資策會Fintank銀行"+"("+label+")"
 	address = "10658台北市大安區信義路三段153號"
 	latitude = 25.033788
 	longitude = 121.542579
@@ -62,7 +63,7 @@ def run():
 			cv2.imshow('frame',frame)
 			cv2.imwrite(path+'/examples/'+str(name)+'.jpg',frame)
 			name=name+1
-			if cv2.waitKey(3) & secElapsed>2:
+			if cv2.waitKey(3) & secElapsed>3:
 				break
 		else:
 			break
@@ -87,6 +88,7 @@ def run():
 		# load the trained convolutional neural network and the label
 		# binarizer
 		print("[INFO] loading network...")
+		keras.backend.clear_session() 
 		model = load_model(path+"/pokedex.model")
 		lb = pickle.loads(open(path+"/lb.pickle", "rb").read())
 
@@ -136,6 +138,8 @@ def run():
 		if(safety==3 or safety>3):
 			print("Safety")
 			cv2.imwrite(path+'/output/1.jpg',output)
+			print(path)
 			break
 		cv2.destroyAllWindows()
 	print(check)
+	

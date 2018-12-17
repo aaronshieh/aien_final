@@ -155,6 +155,8 @@ function sendAudioFile(blob) {
                 window.location.href = '/bank/create';
             } else if(msg.intent == 'money_transfer'){
                 window.location.href = '/bank/transfer';
+            } else if (msg.intent == 'security'){
+                window.location.href = '/security';
             }
         });
     });

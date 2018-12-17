@@ -4,6 +4,11 @@ from opencvkeras import classify
 
 # Create your views here.
 def security(request):
-    classify.run()
+    #classify.run()
 
     return render(request,"./security/security.html")
+
+def run(request):
+    classify.run()
+
+    return render(request, './website/voicebot.html')
