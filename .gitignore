@@ -1,6 +1,5 @@
 *.pyc
 *.csv
-*.wav
 *.mp4
 /opencvkeras/examples/*.jpg
 /opencvkeras/output/*.jpg
