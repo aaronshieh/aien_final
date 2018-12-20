@@ -107,6 +107,8 @@ $(function(){
 
     // Login button
     document.getElementById("login").addEventListener("click", function() {
+        var audio = new Audio("/static/wav/camera-shutter-click-03.wav");
+        audio.play();
         canvas.attr("width", "640");
         canvas.attr("height", "480");
         context.drawImage(video[0], 0, 0, 640, 480);

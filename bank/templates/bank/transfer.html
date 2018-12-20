@@ -153,9 +153,9 @@ $(function(){
         let Y1 = parseInt(msg.startY);
         let X2 = parseInt(msg.endX);
         let Y2 = parseInt(msg.endY);
-        ctx.lineWidth="5";
+        ctx.lineWidth="10";
         if(msg.emotion == 'happy'){
-            ctx.strokeStyle="yellow";
+            ctx.strokeStyle="green";
         } else {
             ctx.strokeStyle="red";
         }
@@ -224,6 +224,8 @@ $(function(){
     // Verify button
     document.getElementById("snap").addEventListener("click", function snap() {
         console.log('snap!');
+        var audio = new Audio("/static/wav/camera-shutter-click-03.wav");
+        audio.play();
         $('#transferResultAccount').text($('#account').val());
         $('#transferResultAmount').text($('#amount').val());
 
@@ -238,13 +240,7 @@ $(function(){
         }).done(function(msg){
             console.log('[done]:', msg);
             document.getElementById("snap").removeEventListener("click", snap);
-            // alert(msg.emotion);
-            if (msg.emotion != 'happy'){
-                var text = `I see you are ${msg.emotion}, try to be happy next time!`
-            } else {
-                var text = `${msg.emotion}!`
-            }
-            $('#detectedEmotion').text(text);
+            $('#detectedEmotion').text(`"${msg.emotion}"`);
             if(msg.emotion == 'happy'){
                 transferSuccess(msg);
             } else {

@@ -5,6 +5,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <style>
 
+html {
+    overflow:hidden;
+}
+
 #recordButton {
     width: 300px;
     height: 300px;
@@ -20,16 +24,15 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
+    <div class="row my-5">
         <div class="col text-center">
-            <br><br><br><br><br>
             <h1 class="display-4" id="h1">
-                What can I do for you?
+                Hello, how can I help you?
             </h1>
-            <br>
+            <em>Press button to speak</em>
         </div>
     </div>
-    <div class="row flex-fill">
+    <div class="row my-5">
         <div class="col text-center">
             <button class="btn btn-primary rounded-circle" id="recordButton">
                 <i class="fas fa-microphone"></i>
@@ -42,6 +45,13 @@
 {% block scripts %}
 <script src="{% static 'js/recorder.js' %}"></script>
 <script>
+window.addEventListener("resize", resize);
+window.addEventListener("load", resize);
+function resize(){
+    var container = $('.container');
+    console.log(window.innerHeight, container.height())
+    container.css('margin-top', (window.innerHeight-container.height())/2 + "px");
+}
 
 var gumStream; 						//stream from getUserMedia()
 var rec; 							//Recorder.js object

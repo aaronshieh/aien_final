@@ -139,6 +139,8 @@ $(function(){
     // Snap
     document.getElementById("snap").addEventListener("click", function snap() {
         console.log('snap!');
+        var audio = new Audio("/static/wav/camera-shutter-click-03.wav");
+        audio.play();
         context.drawImage(video[0], 0, 0, 320, 240);
         $('#createFaceId').modal('hide');
     });
