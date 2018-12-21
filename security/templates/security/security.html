@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <style>
 body, html {
     height: 100%;
@@ -13,13 +14,13 @@ body, html {
 }
 
 
-.bg {
+/* .bg {
     background-image: url("https://impossible.works/content/3-opinion-works/201809180900-rekor-ependisewn-fintech/1_xp1aew5otkrforuk-5btmw.png");
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
+} */
 
 
 button{
@@ -38,9 +39,13 @@ button{
 </style>
 {% endblock %}
 {% block content %}
-<div class="bg">
-        starting security system...
-</div>
+<!-- <div class="bg"> -->
+    <div class="container">
+        <div class="row text-center">
+            <h1 class="display-1" style="margin-top: 300px;">Starting security system...</h1>
+        </div>
+    </div>
+<!-- </div> -->
 {% endblock %}  
 {% block scripts %}
 <script>
