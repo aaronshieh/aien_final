@@ -123,11 +123,24 @@ def detect_intent_audio(project_id, session_id, audio_file_path,
     encoded_audio = base64.b64encode(response.output_audio)
     encoded_audio = encoded_audio.decode('ascii')
 
+    response_ = {
+        'result': 'error',
+        'response_audio': encoded_audio,
+        'fulfillment_text': response.query_result.fulfillment_text
+    }
+
+    if response.query_result.intent.display_name != '':
+        response_['result'] = 'success'
+ 
     if response.query_result.intent.display_name == 'Open Account':
-        return {'result':'success','intent':'open_account', 'response_audio':encoded_audio}
+        response_['intent'] = 'open_account'
     elif response.query_result.intent.display_name == 'Money Transfer':
-        return {'result':'success','intent':'money_transfer', 'response_audio':encoded_audio}
+        response_['intent'] = 'money_transfer'
     elif response.query_result.intent.display_name == 'Security':
-        return {'result':'success','intent':'security', 'response_audio':encoded_audio}
+        response_['intent'] = 'security'
+    elif response.query_result.intent.display_name == 'Predict':
+        response_['intent'] = 'predict'
     else:
-        return {'result':'success','intent':'unknown', 'response_audio':encoded_audio}
+        response_['intent'] = 'unknown'
+
+    return response_

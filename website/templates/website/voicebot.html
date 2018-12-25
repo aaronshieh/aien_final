@@ -153,22 +153,21 @@ function sendAudioFile(blob) {
         contentType: false
     }).done(function(msg){
         console.log(msg);
-        var audioString = JSON.stringify(msg.response_audio)
-        // console.log(audioString)
-        
-        // weird hack to remove " from start and end of audioString
-        // var snd = new Audio("data:audio/x-wav;base64," + audioString.substring(1,audioString.length-1));
-        // snd.play();
-
-        play(audioString).then(function(){
-            if(msg.intent == 'open_account'){
-                window.location.href = '/bank/create';
-            } else if(msg.intent == 'money_transfer'){
-                window.location.href = '/bank/transfer';
-            } else if (msg.intent == 'security'){
-                window.location.href = '/security';
-            }
-        });
+        if (msg.fulfillment_text!='') {
+            var audioString = JSON.stringify(msg.response_audio);
+            $('#h1').text(msg.fulfillment_text);
+            play(audioString).then(function(){
+                if(msg.intent == 'open_account'){
+                    window.location.href = '/bank/create';
+                } else if(msg.intent == 'money_transfer'){
+                    window.location.href = '/bank/transfer';
+                } else if (msg.intent == 'security'){
+                    window.location.href = '/security';
+                }
+            });
+        } else {
+            $('#h1').text('Sorry, I didn\'t get that.');
+        }
     });
 
     function play(audioString) {
@@ -179,6 +178,7 @@ function sendAudioFile(blob) {
             audio.onerror = reject;                      // on error, reject
             audio.onended = resolve;                     // when done, resolve
 
+            // weird hack to remove " from start and end of audioString
             audio.src = "data:audio/x-wav;base64," + audioString.substring(1,audioString.length-1); // just for example
      });
 }
